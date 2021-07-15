@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>sukebei-crawler-gui</title>
+    <meta charset="utf-8">
+	<style> 
+	input[type=text] {
+	  width: 165px;
+	  padding: 12px 20px;
+	  margin: 8px 0;
+	  box-sizing: border-box;
+	  border: 3px solid #ccc;
+	  -webkit-transition: 0.5s;
+	  transition: 0.5s;
+	  outline: none;
+	}
+	input[type=text]:focus {
+	  border: 2px solid #555;
+	}
+
+
+}
+
+	</style>
+    <script src="/eel.js"></script>
+	<script src="./main.js"></script>
+</head>
+
+<body bgcolor="#CCCCCC" alink="#FFFFFF">
+
+	<span style="font-family:sans-serif;">
+    <h2>sukebei crawler</h2>
+	<a href="https://youtu.be/gxzD0JmmtJo" target="_blank">demo</a>
+	<a href="https://github.com/Freddy930727/sukebei-crawler-v2" target="_blank">github</a>
+	<br>
+	Don't close this program while running.
+	<br>
+	To clear the history ,just delete the "history.csv".
+	<br>
+	keyword filter:
+	<input type="text" id="keyword_input" placeholder="(optional),japanese is recommened" style="width:270px;"/></input><br>	
+	date filter:
+	<input type="radio" name="time_on_or_off" value="on" onclick="open_time_filter()">on
+	<input type="date" id="date" disabled=true></input>
+	<input type="radio" name="time_on_or_off" value="off" checked onclick="close_time_filter()" >off
+	<br>
+	quantity:
+	<input type="number" id="quantity_input" value="1" min="1" max="1000"/></input><br>
+	category:
+	<input type="radio" name="category_input" value="1" checked>all categories
+	<input type="radio" name="category_input" value="2">Real Life - Videos
+	<input type="radio" name="category_input" value="3">Art - Anime
+	<br>
+	<input type="radio" name="category_input" value="4">Art - Manga
+	<input type="radio" name="category_input" value="5">Art - Pictures
+	<input type="radio" name="category_input" value="6">Art - Doujinshi
+	<br>
+	way to download:
+	<input type="radio" name="method_input" value="1" checked>download .torrents
+	<input type="radio" name="method_input" value="2">magnet link
+	<br>
+	<input type="button" id="btn" value="Execute✓" onclick="execute()"  style="width:120px;height:40px;font-size:20px;" />
+	<br>
+	progress:
+	<progress id="progress" max="100" value="0"></progress>
+	<span id="percent" ">0%</span>
+	<br>
+	output:
+	<input type="button" id="btn2" value="hide output" onclick="hide_output()"/>
+
+	<br>
+	<textarea id="story"   rows="10" cols="75" >waiting for execute......&#13;&#10;</textarea>
+    
+    
+	</span>
+</body>
+
+</html>
