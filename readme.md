@@ -7,11 +7,10 @@ Execution snapshot
 ## Features
 - Magnet link is available.
 - Automatically save download history in order to prevent overlapping torrents
-- Several filters are supported,inclusive of date, category, keyword, and quantity.
+- Several filters are supported, inclusive of date, category, keyword, and quantity.
 - Gui based on html and js, so you can execute it on any system with any browser.
 ## Usage
- - In /div, execute`python3 main.py`(This version is made for windows system instead of linux. Thereafter, I was quit regret for that.)
- - In /main, double click main.exe.
+ - In /div, execute`python3 main.py`(This version is made for windows system instead of linux.)
 
 ## pip setup
 ```
