@@ -24,10 +24,8 @@ pip install bs4
 ## Notice
  - Browser is required.
  - Don't kill the programe while running, else the history.csv will crash.
- - Main.exe is in the main folder.
- - Only win10 64bits can run .exe, else you have to compile by yourself and modify few lines related to os path.
- - If anti-virus software delete the file, just re-extract the file, so that nothing would be lost.
- - Hinet(色情守門員) would block the web I am crawling, so don't forget to gain a vpn access if you need to bypass it.
+ - This python script works well on windows machine. If you want to run it on Linux, several modifications related to os path is required.
+ - Hinet(色情守門員) would block sukebei.nyaa.si ,so don't forget to gain a vpn access if you need to bypass it.
  - If your torrent software have a function that asks you where to download or set some setting, don't forget to turn it off, so that your computer won't crash when you execute it with magnet link argument.(Like the .gif below).
 ![N|Solid](https://github.com/Freddy930727/sukebei-crawler-v2/blob/master/disaster.gif?raw=true)
 
