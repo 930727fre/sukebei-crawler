@@ -29,7 +29,7 @@ pip install bs4
 ![N|Solid](https://github.com/Freddy930727/sukebei-crawler-v2/blob/master/disaster.gif?raw=true)
 
 ## Goal given up😢
- - I can't distinguish wether current page is last page or not. Since sukebei.nyaa.si crashed so FREQUENTLY that I can't tell crashed web from the page out of index.
+ - I can't distinguish wether current page is the last one or not. Since sukebei.nyaa.si crashs so FREQUENTLY that I can't tell a crashed web from the page out of index.
 ## Contribution
  - Contributions and issues are wellcomed. If you are interested in this project or you have some innovative ideas, be free to tell me.(930727fre@gmail.com)
 
