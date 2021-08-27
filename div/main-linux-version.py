@@ -1,12 +1,7 @@
-import eel
+import eel,requests,csv,subprocess
 from lxml import html
-import requests
 from bs4 import BeautifulSoup
-from os import mkdir
-from os import startfile
-from os import path
-from os import getcwd
-import csv
+from os import mkdir,path,getcwd
 from datetime import datetime
 
 eel.init("web")
@@ -16,10 +11,10 @@ def main(keyword,request_date,quantity,category,torrent_or_magnet):
     quantity=int(quantity)
     if(quantity>500):
         quantity=500
-    if(not path.exists(getcwd()+"\\downloads")):
-        mkdir(getcwd()+"\\downloads")
+    if(not path.exists(getcwd()+"/downloads")):
+        mkdir(getcwd()+"/downloads")
     if(torrent_or_magnet=="1"):
-        download_path=getcwd()+"\\downloads\\"+datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+        download_path=getcwd()+"/downloads/"+datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
         eel.show_output("download path is "+path.abspath(download_path)+"\n")
         mkdir(download_path)
     with open('history.csv', 'a+',newline='',encoding="utf-8-sig") as file:#create the file if it's doesn't exist
@@ -88,7 +83,8 @@ def main(keyword,request_date,quantity,category,torrent_or_magnet):
             with open('history.csv', 'w',newline='',encoding="utf-8-sig") as file:
                 csv.writer(file).writerows(current_list)
             if(torrent_or_magnet=="1"):
-                    startfile(download_path)
+                    #startfile(download_path)
+                    subprocess.call(["xdg-open", download_path])
             return 0
     
         
@@ -115,13 +111,14 @@ def main(keyword,request_date,quantity,category,torrent_or_magnet):
                                 while(not r.status_code==requests.codes.ok):
                                     r = requests.get("https://sukebei.nyaa.si/"+tr.select("td")[2].select("a")[0].get("href"), allow_redirects=True)
                                 try:
-                                    open(download_path+"\\"+filename, 'wb').write(r.content)
+                                    open(download_path+"/"+filename, 'wb').write(r.content)
                                 except:
                                     print("encoding triggered")
                                     print(finished_times+" "+filename)
-                                    open(download_path+"\\"+filename, 'wb',encoding="utf-8-sig").write(r.content)
+                                    open(download_path+"/"+filename, 'wb',encoding="utf-8-sig").write(r.content)
                             elif(torrent_or_magnet=="2"):
-                                startfile(tr.select("td")[2].select("a")[1].get("href"))
+                                #startfile(tr.select("td")[2].select("a")[1].get("href"))
+                                subprocess.call(["xdg-open", tr.select("td")[2].select("a")[1].get("href")])
                             eel.show_output((str(finished_times+1)+"."+temp+"\n"))
                             finished_times+=1
                             current_list[row_of_keyword].append(tr.select("td")[2].select("a")[1].get("href"))
@@ -135,7 +132,8 @@ def main(keyword,request_date,quantity,category,torrent_or_magnet):
                 with open('history.csv', 'w',newline='',encoding='utf-8-sig') as file:
                     csv.writer(file).writerows(current_list)
                 if(torrent_or_magnet=="1"):
-                    startfile(download_path)
+                    #startfile(download_path)
+                    subprocess.call(["xdg-open", download_path])
                 return 0
         #print("in page"+str(page)+" find "+str((finished_times-tempb)))
         tempb=finished_times
