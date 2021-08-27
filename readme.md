@@ -3,7 +3,7 @@ Sukebei-crawler brings you latest torrents and magnet links with most seeders.
 
 ## Watch [demo]
 Execution snapshot
-![N|Solid](https://github.com/Freddy930727/sukebei-crawler-v2/blob/master/snapshot.JPG?raw=true)
+![N|Solid](https://github.com/Freddy930727/sukebei-crawler-v2/blob/master/Screenshot.JPG?raw=true)
 ## Features
 - Works well on Ubuntu and Windows.
 - Magnet link is available.
