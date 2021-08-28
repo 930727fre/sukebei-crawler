@@ -22,8 +22,9 @@ pip install bs4
 ```
 
 ## Notice
- - Browser is required.
+ - Browser is required(for showing gui).
  - Don't kill the programe while running, else the history.csv will crash.
+ - Windows version is no longer mantained, so it's deprecated to use it.
 
 ## Goal given up😢
  - Since sukebei.nyaa.si crashes so FREQUENTLY, I can't tell a crashed web from a page out of index.
