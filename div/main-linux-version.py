@@ -11,8 +11,8 @@ def main(keyword,request_date,quantity,category,torrent_or_magnet):
     quantity=int(quantity)
     if(quantity>500):
         quantity=500
-    if(not path.exists(getcwd()+"/downloads")):
-        mkdir(getcwd()+"/downloads")
+    if(not path.exists("downloads")):
+        mkdir("./downloads")
     if(torrent_or_magnet=="1"):
         download_path=getcwd()+"/downloads/"+datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
         eel.show_output("Download path="+path.abspath(download_path)+"\n")
@@ -52,6 +52,8 @@ def main(keyword,request_date,quantity,category,torrent_or_magnet):
 
     finished_times=0
     tempb=0
+    if(torrent_or_magnet=="1"):
+        subprocess.call(["xdg-open", download_path])
     for page in range(1,1000,1):
         url="https://sukebei.nyaa.si/"
         if keyword !="":
@@ -71,9 +73,9 @@ def main(keyword,request_date,quantity,category,torrent_or_magnet):
         while((not web.status_code==requests.codes.ok) and temp<20):
             web=requests.get(url)
             soup = BeautifulSoup(web.text, "lxml")
+            time.sleep(2)
             temp+=1
             #print("reloading "+url+" "+str(temp))
-
         if(temp==20): #if tried 20 times without success, then reutrn 0 or there is no page anymore
             eel.show_output("the site has been shut down,I can only find "+str(finished_times)+",still "+str(quantity-finished_times)+" left.\n")
             #print("end")
@@ -82,10 +84,8 @@ def main(keyword,request_date,quantity,category,torrent_or_magnet):
                     current_list[temp][0]="error"#fill the bug row
             with open('history.csv', 'w',newline='',encoding="utf-8-sig") as file:
                 csv.writer(file).writerows(current_list)
-        if(torrent_or_magnet=="1"):
-            subprocess.call(["xdg-open", download_path])
-        return 0
-    
+            return 0
+
         
         eel.show_output("url="+url+"\n")
         for tr in soup.findAll(True, {"class":["success", "default","danger"]}):
@@ -98,38 +98,34 @@ def main(keyword,request_date,quantity,category,torrent_or_magnet):
                         except:
                                 filename=tr.select("a")[1].get("title")      
                         if(not filename in current_list[row_of_keyword]):
-                            temp=((finished_times+1)/quantity*100)
-                            eel.show_percentage(str('%.2f'%temp))
-
                             if(torrent_or_magnet=="1"):
                                 for temp in range(len(filename)):
                                     if(filename[temp] in '\/:*?"<>|'):#special word that can't be named the name of a file in win10
                                         filename=filename.replace(filename[temp]," ")
                                 r = requests.get("https://sukebei.nyaa.si/"+tr.select("td")[2].select("a")[0].get("href"), allow_redirects=True)
-                                temp=filename
                                 filename=bytes(filename, 'utf-8').decode('utf-8', 'ignore')
-                                if(len(temp)!=len(filename)):
-                                    print("triggered")
                                 while(not r.status_code==requests.codes.ok):
                                     time.sleep(2)
                                     r = requests.get("https://sukebei.nyaa.si/"+tr.select("td")[2].select("a")[0].get("href"), allow_redirects=True)
+                                temp=filename
                                 filename=download_path+"/"+filename
                                 tempa=0#bytes
                                 tempb=0#sum of bytes
                                 while(True):
-                                    if(tempb>=246):
-                                        filename=temp[0:tempa-1:1]
+                                    if(tempb>=245):
+                                        filename=filename[0:tempa-1:1]
                                         break
                                     elif(tempa==len(filename)-1):
                                         break
-                                    tempb=tempb+len(temp[tempa].encode('utf-8'))
+                                    tempb=tempb+len(filename[tempa].encode('utf-8'))
                                     tempa=tempa+1
-                                filename=filename+".torrent"
-                                print(filename)
-                                open(filename, 'wb').write(r.content)
+
+                                open(filename+".torrent", 'wb').write(r.content)
                             elif(torrent_or_magnet=="2"):
                                 subprocess.call(["xdg-open", tr.select("td")[2].select("a")[1].get("href")])
-                            eel.show_output((str(finished_times+1)+"."+filename+"\n"))
+                            tempa=((finished_times+1)/quantity*100)
+                            eel.show_percentage(str('%.2f'%tempa))                           
+                            eel.show_output((str(finished_times+1)+"."+temp+"\n"))
                             finished_times+=1
                             current_list[row_of_keyword].append(temp)
                                     
@@ -141,9 +137,6 @@ def main(keyword,request_date,quantity,category,torrent_or_magnet):
                         current_list[temp][0]="error"#fill the bug row
                 with open('history.csv', 'w',newline='',encoding='utf-8-sig') as file:
                     csv.writer(file).writerows(current_list)
-                if(torrent_or_magnet=="1"):
-                    #startfile(download_path)
-                    subprocess.call(["xdg-open", download_path])
                 return 0
         #print("in page"+str(page)+" find "+str((finished_times-tempb)))
         tempb=finished_times
