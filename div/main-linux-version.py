@@ -1,4 +1,4 @@
-import eel,requests,csv,subprocess
+import eel,requests,csv,subprocess,time
 from lxml import html
 from bs4 import BeautifulSoup
 from os import mkdir,path,getcwd
@@ -15,10 +15,10 @@ def main(keyword,request_date,quantity,category,torrent_or_magnet):
         mkdir(getcwd()+"/downloads")
     if(torrent_or_magnet=="1"):
         download_path=getcwd()+"/downloads/"+datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
-        eel.show_output("download path is "+path.abspath(download_path)+"\n")
+        eel.show_output("Download path="+path.abspath(download_path)+"\n")
         mkdir(download_path)
     with open('history.csv', 'a+',newline='',encoding="utf-8-sig") as file:#create the file if it's doesn't exist
-        temp=1#with open have to do something
+        temp=1
     with open('history.csv', 'r',newline='',encoding="utf-8-sig") as file:
         history_list = list(csv.reader(file))
     if(not len(history_list)==0):
@@ -63,7 +63,7 @@ def main(keyword,request_date,quantity,category,torrent_or_magnet):
         try:
             web=requests.get(url)
         except:
-            eel.show_output("fail to gain access to internet\n")
+            eel.show_output("Fail to gain access to sukebei.nayy.si.\n")
             return 0
         soup = BeautifulSoup(web.text, "lxml")
         
@@ -74,18 +74,17 @@ def main(keyword,request_date,quantity,category,torrent_or_magnet):
             temp+=1
             #print("reloading "+url+" "+str(temp))
 
-        if(temp==20): #if tried 20 times without success then reutrn 0 or there is no page anymore
-            eel.show_output("the site has shut down,i can only find "+str(finished_times)+",still "+str(quantity-finished_times)+" left.\n")
+        if(temp==20): #if tried 20 times without success, then reutrn 0 or there is no page anymore
+            eel.show_output("the site has been shut down,I can only find "+str(finished_times)+",still "+str(quantity-finished_times)+" left.\n")
             #print("end")
             for temp in range(len(current_list)):
                 if(current_list[temp][0]=='' and len(current_list[temp])==0):
                     current_list[temp][0]="error"#fill the bug row
             with open('history.csv', 'w',newline='',encoding="utf-8-sig") as file:
                 csv.writer(file).writerows(current_list)
-            if(torrent_or_magnet=="1"):
-                    #startfile(download_path)
-                    subprocess.call(["xdg-open", download_path])
-            return 0
+        if(torrent_or_magnet=="1"):
+            subprocess.call(["xdg-open", download_path])
+        return 0
     
         
         eel.show_output("url="+url+"\n")
@@ -93,35 +92,46 @@ def main(keyword,request_date,quantity,category,torrent_or_magnet):
             if(category==tr.select("a")[0].get("title") or category=="all categories"):
                 if(request_date in tr.select("td")[4].string or len(request_date)==0):
                     if(tr.select("td")[3].string != "0 Bytes"):
-                        if(not tr.select("td")[2].select("a")[1].get("href") in current_list[row_of_keyword]):
+                        try:
+                            if("comments" in tr.select("a")[1].get("class")): #if it doesn't have a class ,this error would be triggered
+                                filename=tr.select("a")[2].get("title")
+                        except:
+                                filename=tr.select("a")[1].get("title")      
+                        if(not filename in current_list[row_of_keyword]):
                             temp=((finished_times+1)/quantity*100)
                             eel.show_percentage(str('%.2f'%temp))
-                            try:
-                                if("comments" in tr.select("a")[1].get("class")): #if it doesn't have a class ,this error would be triggered
-                                    temp=tr.select("a")[2].get("title")
-                            except:
-                                temp=tr.select("a")[1].get("title")
+
                             if(torrent_or_magnet=="1"):
-                                temp=temp[0:246:1]#maximum length of file name in win10
-                                for tempa in range(len(temp)):
-                                    if(temp[tempa] in '\/:*?"<>|'):#special word that can't be named the name of a file in win10
-                                        temp=temp.replace(temp[tempa]," ")
+                                for temp in range(len(filename)):
+                                    if(filename[temp] in '\/:*?"<>|'):#special word that can't be named the name of a file in win10
+                                        filename=filename.replace(filename[temp]," ")
                                 r = requests.get("https://sukebei.nyaa.si/"+tr.select("td")[2].select("a")[0].get("href"), allow_redirects=True)
-                                filename=temp+".torrent"
+                                temp=filename
+                                filename=bytes(filename, 'utf-8').decode('utf-8', 'ignore')
+                                if(len(temp)!=len(filename)):
+                                    print("triggered")
                                 while(not r.status_code==requests.codes.ok):
+                                    time.sleep(2)
                                     r = requests.get("https://sukebei.nyaa.si/"+tr.select("td")[2].select("a")[0].get("href"), allow_redirects=True)
-                                try:
-                                    open(download_path+"/"+filename, 'wb').write(r.content)
-                                except:
-                                    print("encoding triggered")
-                                    print(finished_times+" "+filename)
-                                    open(download_path+"/"+filename, 'wb',encoding="utf-8-sig").write(r.content)
+                                filename=download_path+"/"+filename
+                                tempa=0#bytes
+                                tempb=0#sum of bytes
+                                while(True):
+                                    if(tempb>=246):
+                                        filename=temp[0:tempa-1:1]
+                                        break
+                                    elif(tempa==len(filename)-1):
+                                        break
+                                    tempb=tempb+len(temp[tempa].encode('utf-8'))
+                                    tempa=tempa+1
+                                filename=filename+".torrent"
+                                print(filename)
+                                open(filename, 'wb').write(r.content)
                             elif(torrent_or_magnet=="2"):
-                                #startfile(tr.select("td")[2].select("a")[1].get("href"))
                                 subprocess.call(["xdg-open", tr.select("td")[2].select("a")[1].get("href")])
-                            eel.show_output((str(finished_times+1)+"."+temp+"\n"))
+                            eel.show_output((str(finished_times+1)+"."+filename+"\n"))
                             finished_times+=1
-                            current_list[row_of_keyword].append(tr.select("td")[2].select("a")[1].get("href"))
+                            current_list[row_of_keyword].append(temp)
                                     
             if(finished_times>=quantity):
                 #print("end")
