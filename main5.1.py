@@ -1,13 +1,15 @@
 import requests,csv,subprocess,time,platform
 from bs4 import BeautifulSoup
-from os import mkdir,path,getcwd,startfile
+from os import mkdir,path,getcwd
 from datetime import datetime
 from tqdm import tqdm
 from configuration import *
 
 
-
 operating_system=platform.system()
+
+if(operating_system=="Windows"):
+    from os import startfile #Since there is no startfile() in Linux version's library
 
 def main():
     global keyword,quantity,category,torrent_or_magnet
@@ -61,7 +63,7 @@ def main():
         elif(operating_system=="Linux"):    
             subprocess.call(["xdg-open", download_path])#xdg-open is only supported in few distros, e.g. Ubuntu.
     
-    pbar=tqdm(total=quantity,bar_format="{n_fmt}/{total_fmt}{bar}|{percentage:3.0f}%|:{desc}")
+    pbar=tqdm(total=quantity,bar_format="{n_fmt}/{total_fmt}{bar}|{percentage:3.0f}%|:{desc}",ncols=150,mininterval=0.1)
     
     for page in range(1,1000,1):
         url="https://sukebei.nyaa.si/"
