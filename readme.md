@@ -17,14 +17,22 @@ pip install -r requirements.txt
 ```
 
 ## Notice
+ - Modify configuration.py for customized request.
  - Since this script no longer support gui, it only works in terminal.
  - Browser is required for showing gui.
- - Don't kill the programe while running, else the history.csv will crash.
 
-## Goal given up😢
- - Since sukebei.nyaa.si crashes so FREQUENTLY, I can't tell a crashed web from a page out of index.
+## Update log
+### v5.2
+ - Performance improvement.
+ - Stabilize tqdm progressbar.
+ - Stabilize db.csv
+ - Avoid unexisting page.
+### v5.1 
+ - Performance improvement.
+ - Gui removed.
+
 ## Contribution
- - Contributions and issues are wellcomed. If you are interested in this project or you have some innovative ideas, feel free to tell me.(930727fre@gmail.com)
+ - Contributions and issues are wellcomed. If you are interested in this project or have some innovative ideas, feel free to contact me.(930727fre@gmail.com)
 
 
 [//]: # ()
