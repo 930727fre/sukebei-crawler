@@ -9,7 +9,7 @@ Execution snapshot(Gui is no longer supported after stable release v6, but it's 
 - Flexible choice between downloading .bt directly or opening magnet link.
 - Automatically save download history in order to skip existing torrents.
 - Several filters are supported, inclusive of category, keyword, and quantity.
-- Gui(versions prior to [v5]) is based on html and js, so you can execute it on Ubuntu/Windows with any Chrome.
+- Gui(versions prior to [v5]) is based on html and js, so you can execute it on Ubuntu/Windows with any Browser.
 
 ## pip setup
 ```
