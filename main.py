@@ -37,7 +37,8 @@ def main():
         temp=1
     with open('db.csv', 'r',newline='',encoding="utf-8-sig") as file:
         db = list(csv.reader(file))
-    if(not len(db)==0):
+        
+    if(not len(db[0])==0):
         row_of_keyword = -1
         for temp in range(len(db)):
             if(keyword == db[temp][0]):

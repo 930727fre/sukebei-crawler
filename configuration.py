@@ -1,6 +1,6 @@
 #Customize your configurations here.
 keyword="" #It will crawl for most trending torrents if the string is left blank.
-quantity=100 #Quantity for requests
+quantity=15 #Quantity for requests
 category="1"
 """
     if category=="1":
