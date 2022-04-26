@@ -72,7 +72,7 @@ def main():
         elif(operating_system=="Linux"):    
             subprocess.call(["xdg-open", download_path])#xdg-open is only supported in few distros, e.g. Ubuntu.
     
-
+    print("status: crawling")
     page=1
     while(True):
         url="https://sukebei.nyaa.si"
@@ -131,7 +131,8 @@ def main():
         if soup.find_all("li", {"class":"next disabled"}) or finished_times==quantity:
             break
         page=page+1
-    print("Crwaling finished.")
+    print("status: crwaling finished.")
+    print("status: downloading")
     if torrent_or_magnet=="1":
         for i in tqdm(range(len(bt_list))):
             filename=filename_list[i]
