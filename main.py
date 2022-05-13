@@ -76,7 +76,10 @@ def main():
         if(operating_system == "Windows"):
             startfile(download_path)
         elif(operating_system=="Linux"):    
-            subprocess.call(["xdg-open", download_path])#xdg-open is only supported in few distros, e.g. Ubuntu.
+            try:
+                subprocess.call(["xdg-open", download_path])#xdg-open is only supported in few distros, e.g. Ubuntu.
+            else:
+                print("xdg-open is not available")
     
     print("status: crawling")
     page=1
