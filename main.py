@@ -78,7 +78,7 @@ def main():
         elif(operating_system=="Linux"):    
             try:
                 subprocess.call(["xdg-open", download_path])#xdg-open is only supported in few distros, e.g. Ubuntu.
-            else:
+            except:
                 print("xdg-open is not available")
     
     print("status: crawling")
@@ -158,13 +158,13 @@ def main():
                 if temp==5:
                     break
             filename=download_path+"/"+filename
-            """
+            
             while(True):
                 if(sys.getsizeof(filename)>=254):
                     filename=filename[:-1]
                 else:
                     break
-            """
+                    
             open(filename+".torrent", 'wb').write(r.content)
     elif(torrent_or_magnet=="2"):
         for i in range(len(bt_list)):
